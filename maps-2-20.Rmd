@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 library(tidycensus)
 library(tidyverse)
 
@@ -17,7 +17,7 @@ census_api_key("9f9584127dd506cdaf80bdb78927e9c01c12f2b8")
 
 ```
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 racevars <- c(White = "B02001_002", 
               Black = "B02001_003", 
               Asian = "B02001_005",
@@ -25,12 +25,13 @@ racevars <- c(White = "B02001_002",
 harris <- get_acs(geography = "tract",
                   variables = racevars, 
                   year = 2018,
-                  state = "TX",
-                  county = "Harris County",
+                  state = "IL",
+                  county = "Cook County",
                   geometry = TRUE,
                   summary_var = "B02001_001") 
+```
 
-
+```{r, echo = FALSE}
 harris %>%
   mutate(Percent = 100 * (estimate / summary_est)) %>%
   ggplot(aes(fill = Percent, color = Percent)) +
@@ -38,9 +39,10 @@ harris %>%
   geom_sf() +
   scale_fill_viridis_c(direction = -1) +
   scale_color_viridis_c(direction = -1) +
-  labs(title = "Racial geography of Harris County, Texas",
+  labs(title = "Racial geography of Cook County, IL",
        caption = "Source: American Community Survey 2014-2018") +
   theme_void()
 ```
+
 
 
